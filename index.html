@@ -12,6 +12,10 @@ body{
     text-align:center;
 }
 
+h1{
+    margin-top:30px;
+}
+
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -27,17 +31,9 @@ body{
     justify-content:center;
     align-items:center;
     position:relative;
-    overflow:hidden;
-}
-
-.card img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
 }
 
 button{
-    position:absolute;
     padding:12px 20px;
     background:#ff2d75;
     border:none;
@@ -46,6 +42,32 @@ button{
     border-radius:8px;
     cursor:pointer;
 }
+
+.card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* pantalla suscripción */
+
+.paywall{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.9);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.paybox{
+    background:#222;
+    padding:30px;
+    border-radius:12px;
+}
 </style>
 </head>
 
@@ -53,33 +75,74 @@ button{
 
 <h1>Onlys Flans</h1>
 
+<p>👀 Visitas a la página: <span id="contador"></span></p>
+
 <div class="grid">
 
 <div class="card" data-img="flan1.jpg">
-<button onclick="reveal(this)">Descubrir / Prueba gratuita</button>
+<button onclick="openPaywall(this)">Descubrir / Prueba gratuita</button>
 </div>
 
 <div class="card" data-img="flan2.jpg">
-<button onclick="reveal(this)">Descubrir / Prueba gratuita</button>
+<button onclick="openPaywall(this)">Descubrir / Prueba gratuita</button>
 </div>
 
 <div class="card" data-img="flan3.jpg">
-<button onclick="reveal(this)">Descubrir / Prueba gratuita</button>
+<button onclick="openPaywall(this)">Descubrir / Prueba gratuita</button>
 </div>
 
+</div>
+
+<!-- pantalla suscripción -->
+
+<div class="paywall" id="paywall">
+<div class="paybox">
+<h2>Suscripción requerida</h2>
+<p>Activa la prueba gratuita para ver el contenido</p>
+<button onclick="unlock()">Activar prueba gratis</button>
+</div>
 </div>
 
 <script>
-function reveal(btn){
-    const card = btn.parentElement;
-    const imgSrc = card.getAttribute("data-img");
 
-    const img = document.createElement("img");
-    img.src = imgSrc;
+/* contador visitas */
 
-    card.innerHTML = "";
-    card.appendChild(img);
+let visitas = localStorage.getItem("visitas");
+
+if(!visitas){
+visitas = 0;
 }
+
+visitas++;
+
+localStorage.setItem("visitas", visitas);
+
+document.getElementById("contador").textContent = visitas;
+
+
+/* paywall */
+
+let currentCard;
+
+function openPaywall(btn){
+currentCard = btn.parentElement;
+document.getElementById("paywall").style.display="flex";
+}
+
+function unlock(){
+
+const imgSrc = currentCard.getAttribute("data-img");
+
+const img = document.createElement("img");
+img.src = imgSrc;
+
+currentCard.innerHTML="";
+currentCard.appendChild(img);
+
+document.getElementById("paywall").style.display="none";
+
+}
+
 </script>
 
 </body>
