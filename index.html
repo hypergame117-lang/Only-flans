@@ -6,46 +6,41 @@
 
 <style>
 body{
-    font-family: Arial, sans-serif;
     background:#111;
     color:white;
+    font-family:Arial;
     text-align:center;
-}
-
-h1{
-    margin:30px;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
     gap:20px;
     padding:20px;
 }
 
 .card{
+    background:#222;
+    height:250px;
+    border-radius:10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
     position:relative;
+    overflow:hidden;
 }
 
 .card img{
     width:100%;
-    border-radius:10px;
-    filter:blur(15px);
-    transition:0.4s;
+    height:100%;
+    object-fit:cover;
 }
 
-.card.revealed img{
-    filter:blur(0);
-}
-
-.btn{
+button{
     position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    padding:12px 20px;
     background:#ff2d75;
     border:none;
-    padding:12px 20px;
     color:white;
     font-weight:bold;
     border-radius:8px;
@@ -60,28 +55,30 @@ h1{
 
 <div class="grid">
 
-<div class="card"> 
-<img src="flan1.jpg">
-<button class="btn" onclick="reveal(this)">Descubrir / Prueba gratuita</button>
+<div class="card" data-img="flan1.jpg">
+<button onclick="reveal(this)">Descubrir / Prueba gratuita</button>
 </div>
 
-<div class="card">
-<img src="flan2.jpg">
-<button class="btn" onclick="reveal(this)">Descubrir / Prueba gratuita</button>
+<div class="card" data-img="flan2.jpg">
+<button onclick="reveal(this)">Descubrir / Prueba gratuita</button>
 </div>
 
-<div class="card">
-<img src="flan3.jpg">
-<button class="btn" onclick="reveal(this)">Descubrir / Prueba gratuita</button>
+<div class="card" data-img="flan3.jpg">
+<button onclick="reveal(this)">Descubrir / Prueba gratuita</button>
 </div>
 
 </div>
 
 <script>
-function reveal(button){
-    const card = button.parentElement;
-    card.classList.add("revealed");
-    button.style.display="none";
+function reveal(btn){
+    const card = btn.parentElement;
+    const imgSrc = card.getAttribute("data-img");
+
+    const img = document.createElement("img");
+    img.src = imgSrc;
+
+    card.innerHTML = "";
+    card.appendChild(img);
 }
 </script>
 
